@@ -1,13 +1,8 @@
-import { AuthGuard } from "@/modules/auth/ui/components/auth-guard";
-import { OrganizationGuard } from "@/modules/auth/ui/components/organization-guard";
+import { DashboardLayout } from "@/modules/dashboard/ui/layouts/dashboard-layout";
 
 type Props = {
   children: React.ReactNode;
 };
-export default function DashboardLayout({ children }: Props) {
-  return (
-    <AuthGuard>
-      <OrganizationGuard>{children}</OrganizationGuard>
-    </AuthGuard>
-  );
+export default function Layout({ children }: Props) {
+  return <DashboardLayout>{children}</DashboardLayout>;
 }
