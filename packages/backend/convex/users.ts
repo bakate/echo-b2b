@@ -15,6 +15,10 @@ export const addUser = mutation({
     if (identity === null) {
       throw new Error("User is not authenticated");
     }
+    const orgId = identity.orgId;
+    if (!orgId || typeof orgId !== "string") {
+      throw new Error("Missing organization");
+    }
     return ctx.db.insert("users", {
       name: `User Bakate ${Math.ceil(Math.random() * 100).toFixed(2)}`,
     });

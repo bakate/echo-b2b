@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@workspace/ui/components/button";
 import { useMutation, useQuery } from "convex/react";
-import { UserButton } from "@clerk/nextjs";
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { api } from "@workspace/backend/_generated/api";
 
 export default function Page() {
@@ -17,6 +17,8 @@ export default function Page() {
 
         <Button onClick={() => addUser()}>Add User</Button>
         <UserButton />
+
+        <OrganizationSwitcher hidePersonal />
       </div>
     </div>
   );
