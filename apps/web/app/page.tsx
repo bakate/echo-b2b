@@ -1,6 +1,12 @@
 "use client";
 import { Button } from "@workspace/ui/components/button";
-import { useMutation, useQuery } from "convex/react";
+import {
+  useMutation,
+  useQuery,
+  Authenticated,
+  Unauthenticated,
+} from "convex/react";
+import { SignInButton, UserButton } from "@clerk/nextjs";
 import { api } from "@workspace/backend/_generated/api";
 
 export default function Page() {
@@ -8,14 +14,28 @@ export default function Page() {
   const addUser = useMutation(api.users.addUser);
   console.log(users);
   return (
-    <div className="flex items-center justify-center min-h-svh">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-bold">Hello World from app/web</h1>
-        <Button size="sm">Button</Button>
-        <ul>{users?.map((user) => <li key={user._id}>{user.name}</li>)}</ul>
+    <>
+      <Authenticated>
+        <div className="flex items-center justify-center min-h-svh">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <h1 className="text-2xl font-bold">Hello World from app/web</h1>
+            <Button size="sm">Button</Button>
+            <ul>{users?.map((user) => <li key={user._id}>{user.name}</li>)}</ul>
 
-        <Button onClick={() => addUser()}>Add User</Button>
-      </div>
-    </div>
+            <Button onClick={() => addUser()}>Add User</Button>
+            <UserButton />
+          </div>
+        </div>
+      </Authenticated>
+      <Unauthenticated>
+        <div className="flex items-center justify-center min-h-svh">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <h1 className="text-2xl font-bold">Hello World from app/web</h1>
+            <p>You are currently Unauthenticated</p>
+            <SignInButton />
+          </div>
+        </div>
+      </Unauthenticated>
+    </>
   );
 }

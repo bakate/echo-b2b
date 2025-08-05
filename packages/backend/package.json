@@ -10,9 +10,12 @@
     "setup": "convex dev --until-success"
   },
   "dependencies": {
-    "convex": "^1.25.4"
+    "@t3-oss/env-nextjs": "^0.13.8",
+    "convex": "^1.25.4",
+    "zod": "3.25.67"
   },
   "devDependencies": {
+    "@types/node": "^20",
     "@workspace/typescript-config": "workspace:*",
     "typescript": "latest"
   }
