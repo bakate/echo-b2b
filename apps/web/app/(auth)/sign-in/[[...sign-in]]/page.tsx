@@ -1,13 +1,5 @@
-"use client";
+import { SignInScreen } from "@/modules/auth/ui/screens/sign-in.screen";
 
-import { SignIn } from "@clerk/nextjs";
-
-const SignInPage = () => {
-  return (
-    <div>
-      <SignIn />
-    </div>
-  );
-};
-
-export default SignInPage;
+export default function SignInPage() {
+  return <SignInScreen />;
+}
