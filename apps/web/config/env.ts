@@ -5,6 +5,7 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     CLERK_SECRET_KEY: z.string().min(1),
+    SENTRY_AUTH_TOKEN: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_CONVEX_URL: z.string().min(1),
@@ -25,5 +26,6 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL,
     NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL:
       process.env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
   },
 });
