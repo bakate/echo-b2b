@@ -115,11 +115,7 @@ export const DashboardSidebar = () => {
                   <SidebarMenuButton
                     asChild
                     tooltip={item.title}
-                    className={
-                      isActive(item.url)
-                        ? "bg-primary text-primary-foreground"
-                        : ""
-                    }
+                    className={isActive(item.url) ? "active-sidebar-item" : ""}
                   >
                     <Link href={item.url}>
                       <item.icon className="size-4" />
@@ -142,11 +138,7 @@ export const DashboardSidebar = () => {
                   <SidebarMenuButton
                     asChild
                     tooltip={item.title}
-                    className={
-                      isActive(item.url)
-                        ? "bg-primary text-primary-foreground"
-                        : ""
-                    }
+                    className={isActive(item.url) ? "active-sidebar-item" : ""}
                   >
                     <Link href={item.url}>
                       <item.icon className="size-4" />
@@ -169,11 +161,7 @@ export const DashboardSidebar = () => {
                   <SidebarMenuButton
                     asChild
                     tooltip={item.title}
-                    className={
-                      isActive(item.url)
-                        ? "bg-primary text-primary-foreground"
-                        : ""
-                    }
+                    className={isActive(item.url) ? "active-sidebar-item" : ""}
                   >
                     <Link href={item.url}>
                       <item.icon className="size-4" />
