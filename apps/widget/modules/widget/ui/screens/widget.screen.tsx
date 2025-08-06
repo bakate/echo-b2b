@@ -1,11 +1,25 @@
 "use client";
 
+import { useAtomValue } from "jotai";
 import { WidgetAuthScreen } from "./widget-auth.screen";
+import { screenAtom } from "../../atoms/widget-atoms";
+import { ReactNode } from "react";
 
 type Props = {
   organizationId: string;
 };
 export const WidgetScreen = ({ organizationId }: Props) => {
+  const screen = useAtomValue(screenAtom);
+  const screenComponents: Record<typeof screen, ReactNode> = {
+    auth: <WidgetAuthScreen />,
+    selection: <div>TODO: Selection</div>,
+    inbox: <div>TODO: Inbox</div>,
+    chat: <div>TODO: Chat</div>,
+    contact: <div>TODO: Contact</div>,
+    error: <div>TODO: Error</div>,
+    loading: <div>TODO: Loading</div>,
+    voice: <div>TODO: Voice</div>,
+  };
   return (
     <main className="flex min-h-svh min-w-svw flex-col overflow-hidden rounded-xl border bg-muted">
       {/* <WidgetHeader>
@@ -14,7 +28,7 @@ export const WidgetScreen = ({ organizationId }: Props) => {
           <p className="text-lg">How can we help you today?</p>
         </div>
       </WidgetHeader> */}
-      <WidgetAuthScreen />
+      {screenComponents[screen]}
       {/* <div className="flex flex-1">Widget Screen {organizationId}</div>
       <WidgetFooter /> */}
     </main>
