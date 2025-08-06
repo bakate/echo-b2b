@@ -10,6 +10,7 @@
     "setup": "convex dev --until-success"
   },
   "dependencies": {
+    "@clerk/backend": "^2.6.3",
     "@t3-oss/env-nextjs": "^0.13.8",
     "convex": "^1.25.4",
     "zod": "3.25.67"

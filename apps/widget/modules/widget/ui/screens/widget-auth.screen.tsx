@@ -18,6 +18,9 @@ import { useMutation } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
 import { Doc } from "@workspace/backend/_generated/dataModel";
 import { useTransition } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+import { organizationIdAtom } from "../../atoms/widget-atoms";
+import { contactSessionIdAtomFamily } from "../../atoms/widget-atoms";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -35,7 +38,10 @@ export const WidgetAuthScreen = () => {
     },
   });
   // TODO: temporary test organizationId before we add state management
-  const organizationId = "1234";
+  const organizationId = useAtomValue(organizationIdAtom);
+  const setContactSessionId = useSetAtom(
+    contactSessionIdAtomFamily(organizationId || "")
+  );
 
   const createContactSession = useMutation(
     api.public.contactSessions.createContactSession
@@ -65,7 +71,7 @@ export const WidgetAuthScreen = () => {
         expiresAt: Date.now() + 24 * 60 * 60 * 1000,
         metadata,
       });
-      console.log({ contactSessionId });
+      setContactSessionId(contactSessionId);
     });
   };
   return (
