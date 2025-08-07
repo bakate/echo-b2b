@@ -35,6 +35,7 @@ import {
 import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
 import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger";
 import { DicebarAvatar } from "@workspace/ui/components/dicebar-avatar";
+import { DEFAULT_PAGE_SIZE } from "../../constants";
 
 const formSchema = z.object({
   message: z.string().min(1, "Message is required"),
@@ -70,22 +71,16 @@ export const WidgetChatScreen = () => {
         }
       : "skip",
     {
-      initialNumItems: 10,
+      initialNumItems: DEFAULT_PAGE_SIZE,
     }
   );
 
-  const {
-    canLoadMore,
-    isLoadingMore,
-    handleLoadMore,
-    isExhausted,
-    isLoadingFirstPage,
-    topElementRef,
-  } = useInfiniteScroll({
-    status: messages.status,
-    loadMore: messages.loadMore,
-    loadSize: 10,
-  });
+  const { canLoadMore, isLoadingMore, handleLoadMore, topElementRef } =
+    useInfiniteScroll({
+      status: messages.status,
+      loadMore: messages.loadMore,
+      loadSize: DEFAULT_PAGE_SIZE,
+    });
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -143,7 +138,7 @@ export const WidgetChatScreen = () => {
               <AIMessageContent>
                 <AIResponse>{message.content}</AIResponse>
               </AIMessageContent>
-              {/* TODO: Add Avatar component */}
+
               {message.role === "assistant" ? (
                 <DicebarAvatar
                   seed="assistant"

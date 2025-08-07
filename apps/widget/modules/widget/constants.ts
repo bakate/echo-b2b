@@ -10,3 +10,5 @@ export const WIDGET_SCREENS = [
 ] as const;
 
 export const CONTACT_SESSION_KEY = "echo-b2b_contact_session";
+
+export const DEFAULT_PAGE_SIZE = 10;

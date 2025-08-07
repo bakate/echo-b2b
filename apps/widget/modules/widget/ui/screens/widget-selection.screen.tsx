@@ -14,6 +14,7 @@ import { errorMessageAtom } from "../../atoms/widget-atoms";
 import { useTransition } from "react";
 import { Loader } from "lucide-react";
 import { conversationIdAtom } from "../../atoms/widget-atoms";
+import { WidgetFooter } from "../components/widget-footer";
 
 export const WidgetSelectionScreen = () => {
   const [isPending, startTransition] = useTransition();
@@ -82,6 +83,8 @@ export const WidgetSelectionScreen = () => {
           )}
         </Button>
       </div>
+
+      <WidgetFooter />
     </>
   );
 };

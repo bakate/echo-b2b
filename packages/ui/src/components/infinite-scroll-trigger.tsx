@@ -1,5 +1,5 @@
 import { cn } from "@workspace/ui/lib/utils";
-import { Button } from "./button.js";
+import { Button } from "@workspace/ui/components/button";
 interface InfiniteScrollTriggerProps {
   canLoadMore: boolean;
   isLoadingMore: boolean;

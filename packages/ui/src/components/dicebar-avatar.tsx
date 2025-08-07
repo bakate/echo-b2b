@@ -3,8 +3,12 @@
 import { useMemo } from "react";
 import { glass } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
-import { Avatar, AvatarFallback, AvatarImage } from "./avatar.js";
-import { cn } from "../lib/utils.js";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@workspace/ui/components/avatar";
+import { cn } from "@workspace/ui/lib/utils";
 
 type Props = {
   seed: string;
@@ -30,7 +34,7 @@ export const DicebarAvatar = ({
       size,
     });
     return avatar.toDataUri();
-  }, [seed, size]);
+  }, [seed, size, imageUrl]);
 
   const badgeSize = Math.round(size * 0.5);
   return (

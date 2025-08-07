@@ -8,6 +8,7 @@ import { WidgetErrorScreen } from "./widget-error.screen";
 import { WidgetLoadingScreen } from "./widget-loading.screen";
 import { WidgetSelectionScreen } from "./widget-selection.screen";
 import { WidgetChatScreen } from "./widget-chat.screen";
+import { WidgetInboxScreen } from "./widget-inbox.screen";
 
 type Props = {
   organizationId: string | null;
@@ -18,7 +19,7 @@ export const WidgetScreen = ({ organizationId }: Props) => {
   const screenComponents: Record<typeof screen, ReactNode> = {
     auth: <WidgetAuthScreen />,
     selection: <WidgetSelectionScreen />,
-    inbox: <div>TODO: Inbox</div>,
+    inbox: <WidgetInboxScreen />,
     chat: <WidgetChatScreen />,
     contact: <div>TODO: Contact</div>,
     error: <WidgetErrorScreen />,
