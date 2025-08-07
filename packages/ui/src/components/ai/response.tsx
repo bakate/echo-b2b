@@ -122,7 +122,7 @@ const components: Options["components"] = {
       <CodeBlock
         className={cn("my-4 h-auto", className)}
         data={data}
-        defaultValue={data[0].language}
+        defaultValue={data[0]?.language}
       >
         <CodeBlockHeader>
           <CodeBlockFiles>

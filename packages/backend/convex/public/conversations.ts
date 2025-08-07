@@ -2,7 +2,9 @@ import { ConvexError, v } from "convex/values";
 
 import { mutation, MutationCtx, QueryCtx, query } from "../_generated/server";
 import { Id } from "../_generated/dataModel";
-import { supportAgent } from "../schemas/system/ai/agents/supportAgent";
+import { supportAgent } from "../system/ai/agents/supportAgent";
+import { saveMessage } from "@convex-dev/agent";
+import { components } from "../_generated/api";
 
 // session validator
 async function validateSession(
@@ -33,6 +35,16 @@ export const createConversation = mutation({
 
     const { threadId } = await supportAgent.createThread(ctx, {
       userId: organizationId,
+    });
+
+    await saveMessage(ctx, components.agent, {
+      threadId,
+
+      message: {
+        role: "assistant",
+        // TODO: later modify to widget settings' initial message
+        content: "Hello, how can I help you today?",
+      },
     });
 
     const conversationId = await ctx.db.insert("conversations", {
