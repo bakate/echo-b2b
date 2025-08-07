@@ -32,6 +32,9 @@ import {
   AIInputToolbar,
   AIInputTools,
 } from "@workspace/ui/components/ai/input";
+import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
+import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger";
+import { DicebarAvatar } from "@workspace/ui/components/dicebar-avatar";
 
 const formSchema = z.object({
   message: z.string().min(1, "Message is required"),
@@ -70,6 +73,19 @@ export const WidgetChatScreen = () => {
       initialNumItems: 10,
     }
   );
+
+  const {
+    canLoadMore,
+    isLoadingMore,
+    handleLoadMore,
+    isExhausted,
+    isLoadingFirstPage,
+    topElementRef,
+  } = useInfiniteScroll({
+    status: messages.status,
+    loadMore: messages.loadMore,
+    loadSize: 10,
+  });
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -113,6 +129,12 @@ export const WidgetChatScreen = () => {
       </WidgetHeader>
       <AIConversation>
         <AIConversationContent>
+          <InfiniteScrollTrigger
+            canLoadMore={canLoadMore}
+            isLoadingMore={isLoadingMore}
+            onLoadMore={handleLoadMore}
+            ref={topElementRef}
+          />
           {toUIMessages(messages.results ?? []).map((message) => (
             <AIMessage
               key={message.id}
@@ -122,6 +144,19 @@ export const WidgetChatScreen = () => {
                 <AIResponse>{message.content}</AIResponse>
               </AIMessageContent>
               {/* TODO: Add Avatar component */}
+              {message.role === "assistant" ? (
+                <DicebarAvatar
+                  seed="assistant"
+                  imageUrl="/logo.svg"
+                  size={32}
+                />
+              ) : (
+                <DicebarAvatar
+                  seed="user"
+                  size={32}
+                  badgeImageUrl="/logo.svg"
+                />
+              )}
             </AIMessage>
           ))}
         </AIConversationContent>

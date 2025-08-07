@@ -19,7 +19,7 @@ import { api } from "@workspace/backend/_generated/api";
 import { Doc } from "@workspace/backend/_generated/dataModel";
 import { useTransition } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
-import { organizationIdAtom } from "../../atoms/widget-atoms";
+import { organizationIdAtom, screenAtom } from "../../atoms/widget-atoms";
 import { contactSessionIdAtomFamily } from "../../atoms/widget-atoms";
 
 const formSchema = z.object({
@@ -37,11 +37,12 @@ export const WidgetAuthScreen = () => {
       email: "",
     },
   });
-  // TODO: temporary test organizationId before we add state management
+
   const organizationId = useAtomValue(organizationIdAtom);
   const setContactSessionId = useSetAtom(
     contactSessionIdAtomFamily(organizationId || "")
   );
+  const setScreen = useSetAtom(screenAtom);
 
   const createContactSession = useMutation(
     api.public.contactSessions.createContactSession
@@ -72,6 +73,7 @@ export const WidgetAuthScreen = () => {
         metadata,
       });
       setContactSessionId(contactSessionId);
+      setScreen("selection");
     });
   };
   return (
