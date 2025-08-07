@@ -1,9 +1,8 @@
 import { ConvexError, v } from "convex/values";
 
 import { mutation, MutationCtx, QueryCtx, query } from "../_generated/server";
-import { createClerkClient } from "@clerk/backend";
-import { env } from "../../env";
 import { Id } from "../_generated/dataModel";
+import { supportAgent } from "../schemas/system/ai/agents/supportAgent";
 
 // session validator
 async function validateSession(
@@ -31,8 +30,10 @@ export const createConversation = mutation({
     const { organizationId, contactSessionId } = args;
 
     const sessionId = await validateSession(ctx, { contactSessionId });
-    // TODO: Replace once functionality for thread creation is present
-    const threadId = "1234";
+
+    const { threadId } = await supportAgent.createThread(ctx, {
+      userId: organizationId,
+    });
 
     const conversationId = await ctx.db.insert("conversations", {
       threadId,
@@ -55,7 +56,17 @@ export const getConversation = query({
     });
     const conversation = await ctx.db.get(args.conversationId);
     if (!conversation) {
-      return null;
+      throw new ConvexError({
+        code: "NOT_FOUND",
+        message: "Conversation not found",
+      });
+    }
+
+    if (conversation.contactSessionId !== contactSessionId) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Incorrect session",
+      });
     }
     return {
       _id: conversation._id,

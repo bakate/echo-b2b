@@ -8,11 +8,13 @@ export const env = createEnv({
     CONVEX_URL: z.string().min(1),
     CONVEX_DEPLOYMENT: z.string().min(1),
     CLERK_SECRET_KEY: z.string().min(1),
+    OPENAI_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
     CLERK_JWT_ISSUER_DOMAIN: process.env.CLERK_JWT_ISSUER_DOMAIN,
     CONVEX_URL: process.env.CONVEX_URL,
     CONVEX_DEPLOYMENT: process.env.CONVEX_DEPLOYMENT,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
 });
