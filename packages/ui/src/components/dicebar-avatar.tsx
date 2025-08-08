@@ -43,7 +43,7 @@ export const DicebarAvatar = ({
       style={{ width: size, height: size }}
     >
       <Avatar
-        className={cn("border", className)}
+        className={cn("border shrink-0", className)}
         style={{ width: size, height: size }}
       >
         <AvatarImage src={avatarSrc} alt="User avatar" />
