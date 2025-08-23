@@ -6,57 +6,51 @@ import { supportAgent } from "../system/ai/agents/supportAgent";
 import { MessageDoc, saveMessage } from "@convex-dev/agent";
 import { components } from "../_generated/api";
 import { paginationOptsValidator, PaginationResult } from "convex/server";
+import { isAuthorized } from "./shared";
 
-// Helper function to make sure the user is authorized to access the conversations
-async function isAuthorized(ctx: QueryCtx | MutationCtx) {
-  const identity = await ctx.auth.getUserIdentity();
+export const getOneConversation = query({
+  args: {
+    conversationId: v.id("conversations"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await isAuthorized(ctx);
+    const conversation = await ctx.db.get(args.conversationId);
+    if (!conversation) {
+      throw new ConvexError({
+        code: "NOT_FOUND",
+        message: "Conversation not found",
+      });
+    }
 
-  if (identity === null) {
-    throw new ConvexError({
-      code: "UNAUTHORIZED",
-      message: "You are not authorized to access this resource",
-    });
-  }
-  if (!identity.orgId || typeof identity.orgId !== "string") {
-    throw new ConvexError({
-      code: "UNAUTHORIZED",
-      message: "Organization not found",
-    });
-  }
+    if (conversation.organizationId !== identity.orgId) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "You are not authorized to access this resource",
+      });
+    }
 
-  return identity;
-}
+    const contactSession = await ctx.db.get(conversation.contactSessionId);
+    if (!contactSession) {
+      throw new ConvexError({
+        code: "NOT_FOUND",
+        message: "Contact session not found",
+      });
+    }
+    console.log(contactSession.expiresAt);
+    console.log(Date.now());
 
-// export const getConversation = query({
-//   args: {
-//     conversationId: v.id("conversations"),
-//     contactSessionId: v.id("contactSessions"),
-//   },
-//   handler: async (ctx, args) => {
-//     const contactSessionId = await validateSession(ctx, {
-//       contactSessionId: args.contactSessionId,
-//     });
-//     const conversation = await ctx.db.get(args.conversationId);
-//     if (!conversation) {
-//       throw new ConvexError({
-//         code: "NOT_FOUND",
-//         message: "Conversation not found",
-//       });
-//     }
-
-//     if (conversation.contactSessionId !== contactSessionId) {
-//       throw new ConvexError({
-//         code: "UNAUTHORIZED",
-//         message: "Incorrect session",
-//       });
-//     }
-//     return {
-//       _id: conversation._id,
-//       threadId: conversation.threadId,
-//       status: conversation.status,
-//     } as const;
-//   },
-// });
+    if (contactSession.expiresAt < Date.now()) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Contact session expired",
+      });
+    }
+    return {
+      ...conversation,
+      contactSession,
+    };
+  },
+});
 
 export type ConversationStatus = Doc<"conversations">["status"];
 

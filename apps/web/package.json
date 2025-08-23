@@ -13,10 +13,13 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.28.1",
+    "@convex-dev/agent": "^0.1.17",
+    "@hookform/resolvers": "^5.2.1",
     "@sentry/nextjs": "^10",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@workspace/backend": "workspace:*",
     "@workspace/ui": "workspace:*",
+    "agent^0.1.17": "link:@convex-dev/agent^0.1.17",
     "convex": "^1.25.4",
     "countries-and-timezones": "^3.8.0",
     "date-fns": "^4.1.0",
@@ -26,6 +29,7 @@
     "next-themes": "^0.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.62.0",
     "zod": "3.25.67"
   },
   "devDependencies": {

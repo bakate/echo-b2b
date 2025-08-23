@@ -1,9 +1,7 @@
+import { ConversationsScreen } from "@/modules/dashboard/ui/screens/conversations-screen";
+
 const ConversationsPage = () => {
-  return (
-    <div>
-      <h1>Conversations</h1>
-    </div>
-  );
+  return <ConversationsScreen />;
 };
 
 export default ConversationsPage;
