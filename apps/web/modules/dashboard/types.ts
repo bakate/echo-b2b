@@ -1,4 +1,4 @@
-import { Id } from "@workspace/backend/_generated/dataModel";
+import { Doc, Id } from "@workspace/backend/_generated/dataModel";
 import { z } from "zod";
 
 export type ConversationId = Id<"conversations">;
@@ -8,3 +8,5 @@ export const SingleConversationSchema = z.object({
 });
 
 export type SingleConversation = z.infer<typeof SingleConversationSchema>;
+
+export type ConversationStatus = Doc<"conversations">["status"];

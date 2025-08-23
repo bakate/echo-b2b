@@ -1,8 +1,8 @@
-import { QueryCtx, MutationCtx } from "../_generated/server";
+import { QueryCtx, MutationCtx, ActionCtx } from "../_generated/server";
 import { ConvexError } from "convex/values";
 
 // Helper function to make sure the user is authorized to access the conversations
-export async function isAuthorized(ctx: QueryCtx | MutationCtx) {
+export async function isAuthorized(ctx: QueryCtx | MutationCtx | ActionCtx) {
   const identity = await ctx.auth.getUserIdentity();
 
   if (identity === null) {

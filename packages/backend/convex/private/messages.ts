@@ -13,6 +13,32 @@ import { supportAgent } from "../system/ai/agents/supportAgent";
 import { paginationOptsValidator } from "convex/server";
 import { isAuthorized } from "./shared";
 import { saveMessage } from "@convex-dev/agent";
+import { generateText } from "ai";
+import { openai } from "@ai-sdk/openai";
+
+export const enhanceResponse = action({
+  args: {
+    prompt: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const { prompt } = args;
+    await isAuthorized(ctx);
+    const response = await generateText({
+      model: openai("gpt-4o-mini"),
+      messages: [
+        {
+          role: "system",
+          content: `Enhance the operator's message to be more professional, clear and helpful while maintaining their intent and key information`,
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    });
+    return response.text;
+  },
+});
 
 // we are responding as an operator to a conversation so it's a mutation
 export const createMessage = mutation({

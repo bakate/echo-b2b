@@ -1,16 +1,13 @@
 import { ConvexError, v } from "convex/values";
 
-import {
-  mutation,
-  MutationCtx,
-  QueryCtx,
-  query,
-  action,
-} from "../_generated/server";
-import { Id } from "../_generated/dataModel";
-import { internal } from "../_generated/api";
+import { query, action } from "../_generated/server";
+
+import { components, internal } from "../_generated/api";
 import { supportAgent } from "../system/ai/agents/supportAgent";
 import { paginationOptsValidator } from "convex/server";
+import { resolveConversation } from "../system/ai/tools/resolveConversation";
+import { escalateConversation } from "../system/ai/tools/escalateConversation";
+import { saveMessage } from "@convex-dev/agent";
 
 export const createMessage = action({
   args: {
@@ -61,15 +58,26 @@ export const createMessage = action({
     }
 
     // TODO: Implement subscription check
-    await supportAgent.generateText(
-      ctx,
-      {
+    if (conversation.status === "unresolved") {
+      await supportAgent.generateText(
+        ctx,
+        {
+          threadId,
+        },
+        {
+          prompt,
+          tools: {
+            resolveConversation,
+            escalateConversation,
+          },
+        }
+      );
+    } else {
+      await saveMessage(ctx, components.agent, {
         threadId,
-      },
-      {
         prompt,
-      }
-    );
+      });
+    }
   },
 });
 
